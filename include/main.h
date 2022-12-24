@@ -39,10 +39,11 @@
 /**
  * You should add more #includes here
  */
-//#include "okapi/api.hpp"
+#include "okapi/api.hpp"
 //#include "pros/api_legacy.h"
 #include "EZ-Template/api.hpp"
 #include "autons.hpp"
+
 
 // More includes here...
 //
@@ -84,4 +85,52 @@ void opcontrol(void);
 //#include <iostream>
 #endif
 
-#endif  // _PROS_MAIN_H_
+#ifndef DEVICES
+#define DEVICES
+#include "devices.h"
+#endif
+
+#ifndef THREADS
+#define THREADS
+#include "threads.h"
+#endif
+
+#ifndef ODOMETRY
+#define ODOMETRY
+#include "odometry.h"
+#endif
+
+#ifndef SPLINES
+#define SPLINES
+#include "splines.h"
+#endif
+
+
+#ifndef GUI
+#define GUI
+#include "gui.h"
+#endif
+
+#ifndef PP
+#define PP
+#include "PurePursuit.h"
+#endif
+
+#ifndef AUTONS
+#define AUTONS
+#include "autons.hpp"
+#endif
+
+#ifndef BASICOP
+#define BASICOP
+#include "basicop.h"
+#endif
+
+#include <iostream>
+#include <utility>
+#include <ctime>
+#include <algorithm>
+#include <vector>
+
+
+#endif

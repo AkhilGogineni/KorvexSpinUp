@@ -1,11 +1,11 @@
 {
     "py/object": "pros.conductor.project.Project",
     "py/state": {
-        "project_name": "EZ-Template-Example",
+        "project_name": "korvexSpinUp",
         "target": "v5",
         "templates": {
             "EZ-Template": {
-                "location": "C:\\Users\\union\\AppData\\Roaming\\PROS\\templates\\EZ-Template@2.1.1",
+                "location": "/Users/akhilgogineni/Library/Application Support/PROS/templates/EZ-Template@2.1.1",
                 "metadata": {
                     "origin": "local"
                 },
@@ -21,6 +21,28 @@
                     "include\\EZ-Template\\auton.hpp",
                     "include\\EZ-Template\\sdcard.hpp",
                     "include\\EZ-Template\\drive\\drive.hpp"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "2.1.1"
+            },
+            "KorvexSpinUp": {
+                "location": "C:\\Users\\union\\AppData\\Roaming\\PROS\\templates\\KorvexSpinUp@2.1.1",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "KorvexSpinUp",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^3.5.4",
+                "system_files": [
+                    "firmware\\KorvexSpinUp.a",
+                    "include\\KorvexSpinUp\\util.hpp",
+                    "include\\KorvexSpinUp\\auton_selector.hpp",
+                    "include\\KorvexSpinUp\\api.hpp",
+                    "include\\KorvexSpinUp\\PID.hpp",
+                    "include\\KorvexSpinUp\\auton.hpp",
+                    "include\\KorvexSpinUp\\sdcard.hpp",
+                    "include\\KorvexSpinUp\\drive\\drive.hpp"
                 ],
                 "target": "v5",
                 "user_files": [],
