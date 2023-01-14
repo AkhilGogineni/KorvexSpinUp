@@ -24,11 +24,11 @@ const int SWING_SPEED = 90;
 // If the objects are light or the cog doesn't change much, then there isn't a concern here.
 
 void default_constants() {
-  chassis.set_slew_min_power(80, 80);
-  chassis.set_slew_distance(7, 7);
-  chassis.set_pid_constants(&chassis.headingPID, 11 , 0, 20, 0);
-  chassis.set_pid_constants(&chassis.forward_drivePID, 0.5, 0.3, 6, 0);
-  chassis.set_pid_constants(&chassis.backward_drivePID, 0.5, 0.3, 6, 0);
+  chassis.set_slew_min_power(60, 60);
+  chassis.set_slew_distance(9, 9);
+  chassis.set_pid_constants(&chassis.headingPID, 11, 0, 20, 0);
+  chassis.set_pid_constants(&chassis.forward_drivePID, 0.8, 0.3, 5, 0);
+  chassis.set_pid_constants(&chassis.backward_drivePID, 0.8, 0.3, 5, 0);
   chassis.set_pid_constants(&chassis.turnPID, 5, 0.003, 35, 15);
   chassis.set_pid_constants(&chassis.swingPID, 7, 0, 45, 0);
 }

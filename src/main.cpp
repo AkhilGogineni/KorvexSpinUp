@@ -102,7 +102,7 @@ Drive chassis (
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
-  ,3.25
+  ,2.65
 
   // Cartridge RPM
   //   (or tick per rotation if using tracking wheels)
