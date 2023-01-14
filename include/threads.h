@@ -8,3 +8,4 @@ extern void threadingFlywheel(void*p);
 extern void threadingEndgameMech(void*p);
 extern void threadingIndexer(void*p);
 extern void flywheelP(void*p);
+extern void threadingIndexing(void*p);

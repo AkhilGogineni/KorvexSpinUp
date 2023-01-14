@@ -64,8 +64,12 @@ static lv_res_t SkillsBtnAction(lv_obj_t *btn) {
 static lv_res_t ResetBtnAction(lv_obj_t *btn) {
 	imu.reset();
 
-	leftDrive.tarePosition();
-	rightDrive.tarePosition();
+	ldf.tare_position();
+	ldm.tare_position();
+	ldb.tare_position();
+	rdf.tare_position();
+	rdm.tare_position();
+	rdb.tare_position();
 
 	while (imu.is_calibrating() and pros::millis() < 5000)
 	{
@@ -85,16 +89,16 @@ static lv_res_t noAutonBtnAction(lv_obj_t *btn) {
 Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  {-18, 19, -20}
+  {-17, 8, -9}
 
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  ,{-6, 7, 8}
+  ,{12, -5, 4}
 
   // IMU Port
 
-  ,3
+  ,10
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
@@ -257,30 +261,32 @@ void initialize() {
 	if (pros::millis() < 5000) std::cout << pros::millis() << ": finished calibrating!" << std::endl;
 	else std::cout << pros::millis() << ": calibration failed, moving on" << std::endl;
 
-	std::cout << pros::millis() << ": flywheel: " << flywheel.getTemperature() << std::endl;
+	std::cout << pros::millis() << ": flywheel: " << flywheel.get_temperature() << std::endl;
 	std::cout << pros::millis() << ": intake: " << intake.getTemperature() << std::endl;
-	std::cout << pros::millis() << ": chassisLF: " << ldf.getTemperature() << std::endl;
-	std::cout << pros::millis() << ": chassisLM: " << ldm.getTemperature() << std::endl;
-	std::cout << pros::millis() << ": chassisLB: " << ldb.getTemperature() << std::endl;
-	std::cout << pros::millis() << ": chassisRF: " << rdf.getTemperature() << std::endl;
-	std::cout << pros::millis() << ": chassisRM: " << rdm.getTemperature() << std::endl;
-	std::cout << pros::millis() << ": chassisRB: " << rdb.getTemperature() << std::endl;
+	std::cout << pros::millis() << ": chassisLF: " << ldf.get_temperature() << std::endl;
+	std::cout << pros::millis() << ": chassisLM: " << ldm.get_temperature() << std::endl;
+	std::cout << pros::millis() << ": chassisLB: " << ldb.get_temperature() << std::endl;
+	std::cout << pros::millis() << ": chassisRF: " << rdf.get_temperature() << std::endl;
+	std::cout << pros::millis() << ": chassisRM: " << rdm.get_temperature() << std::endl;
+	std::cout << pros::millis() << ": chassisRB: " << rdb.get_temperature() << std::endl;
   
   
 	// Initialize chassis and auton selector
 	default_constants();
 	modified_exit_condition();
 
-	pros::ADIDigitalOut indexer('A', true);
-	pros::ADIDigitalOut piston1('B', true);
-	pros::ADIDigitalOut piston2('C', true);
+	pros::ADIDigitalOut indexer('A', false);
+	pros::ADIDigitalOut endgame1('B', false);
+	pros::ADIDigitalOut endgame2('C', false);
+	pros::ADIDigitalOut angler('D', false);
 	chassis.initialize();
 }
 
 void disabled() {
-	pros::ADIDigitalOut indexer('A', true);
-	pros::ADIDigitalOut piston1('B', true);
-	pros::ADIDigitalOut piston2('C', true);
+	pros::ADIDigitalOut indexer('A', false);
+	pros::ADIDigitalOut endgame1('B', false);
+	pros::ADIDigitalOut endgame2('C', false);
+	pros::ADIDigitalOut angler('D', false);
 
 }
 
@@ -294,7 +300,7 @@ pros::Task tchassis(threadingChassis, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK
 pros::Task tintake(threadingIntake, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "");
 pros::Task tendgame(threadingEndgameMech, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "");
 pros::Task tflywheelP(flywheelP, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "");
-
+pros::Task tindexing(threadingIndexing, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "");
 
 void autonomous() {
 	
@@ -304,7 +310,8 @@ void autonomous() {
 		tchassis.suspend();
 		tintake.suspend();
 		tendgame.suspend();
-		tflywheel.suspend();
+		tflywheelP.suspend();
+		tindexing.suspend();
 	}
 
 
@@ -312,57 +319,48 @@ void autonomous() {
 	chassis.reset_gyro(); // Reset gyro position to 0
 	chassis.reset_drive_sensor(); // Reset drive sensors to 0
 
-	rightDrive.setBrakeMode(okapi::AbstractMotor::brakeMode::hold);
-	leftDrive.setBrakeMode(okapi::AbstractMotor::brakeMode::hold);
-	intake.setBrakeMode(okapi::AbstractMotor::brakeMode::coast);	
-	flywheel.setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
+	setChassisBreakMode(pros::E_MOTOR_BRAKE_HOLD);
 
-	pros::Task flywheel ( [] { flywheelPID(545); } );
+	intake.setBrakeMode(okapi::AbstractMotor::brakeMode::coast);	
+	flywheel.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	
 
 	
 	if(autonSelection == autonStates::off) {
-			autonSelection = autonStates::RedLeft;
+			autonSelection = autonStates::test;
 	}		
 	switch(autonSelection) {
 		case autonStates::RedLeft:
 			RedLeft();
-			flywheel.suspend();
 			break;
 		case autonStates::RedRight:
 			RedRight();
-			flywheel.suspend();
 			break;
 		case autonStates::BlueLeft:
 			BlueLeft();
-			flywheel.suspend();
 			break;
 		case autonStates::BlueRight:
 			BlueRight();
-			flywheel.suspend();
 			break;
 		case autonStates::RedSoloWP:
 			RedSoloWP();
-			flywheel.suspend();
 			break;
 		case autonStates::BlueSoloWP:
 			BlueSoloWP();
-			flywheel.suspend();
 			break;
 		case autonStates::Skills:
 			skills();
 			//drive_example();
 			// turn_example();
 			// swing_example();
-			flywheel.suspend();
 			break;
 		case autonStates::test:
 			//test();
 			//tuning
 			drive_example();
-			turn_example();
-			swing_example();
-			flywheel.suspend();
-
+			//turn_example();
+			//swing_example();
+			// flywheel.suspend();
 			break;
 		default:
 			break;
@@ -375,7 +373,7 @@ void opcontrol() {
 
 	//chassis.set_drive_brake(MOTOR_BRAKE_COAST); // Set motors to hold.  This helps autonomous consistency.
 	
-	flywheel.setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
+	flywheel.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	intake.setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
 	chassis.set_drive_brake(MOTOR_BRAKE_COAST);
 	driverDisabled = false;
@@ -385,6 +383,7 @@ void opcontrol() {
 		tintake.resume();
 		tendgame.resume();
 		tflywheelP.resume();
+		tindexing.resume();
 		//std::cout << pros::millis() << ": flywheelRPM: " << flywheel.getActualVelocity() << std::endl;
 	} 
 }

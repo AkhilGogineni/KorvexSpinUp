@@ -3,63 +3,13 @@
 
 using namespace std;
 
+
+const int chass_power_threshold = 3;
+
 void flywheelPID(double target) {
   // Constants
-  double kP = 0.5;//.1
-  double kI = 0;
-  double kD = 0;
-  double kV = 127.0/3600;
-
-  double error = 0;
-  double errorInertial = 0;
-  double totalError = 0;
-  double prevError = 0;
-
-  double derivative;
-
-  //reset sensors
-
-
-  while (true) {
-
-    // Proportional
-    error = target - flywheel.getActualVelocity();
-
-    // Integral
-    totalError += error;
-
-    // Derivative
-    derivative = error - prevError;
-
-    // Set speed of flywhell
-    double motorPower = (kP *error) + (kI * totalError) + (kD * derivative);
-
-    // Sets the speed of the flywheel
-
-    if(motorPower > 127){
-      motorPower = 127;
-    }
-    else if(motorPower < 0){
-      motorPower = 0; 
-    }
-
-    flywheel.moveVoltage((target*kV + motorPower)/127*12000);
-    //flywheel.moveVoltage(120);
-    printf("flywheel: %d", flywheel.getActualVelocity());
-    printf("\n");
-
-    prevError = error;
-
-    pros::delay(10);
-
-  }
-
-}
-
-void flywheelPID2(double target) {
-  // Constants
-  double kP = 0.3;//.1
-  double kV = .0354;
+  double kP = 0.3;
+  double kV = .0354; 
   double threshold = 150;
 
   double error = 0;
@@ -67,13 +17,10 @@ void flywheelPID2(double target) {
 
   double output = 0;
 
-  //reset sensors
-
-
   while (true) {
 
     // Proportional
-    error = target - flywheel.getActualVelocity()*6;
+    error = target - flywheel.get_actual_velocity()*6;
 
     // Set speed of flywheel
     if (error > threshold){
@@ -95,18 +42,14 @@ void flywheelPID2(double target) {
       output = 0; 
     }
 
-    flywheel.moveVelocity(output);
-
-    //printf("flywheel: %f", flywheel.get_actual_velocity()*6);
-    //printf("\n");
+    flywheel.move(output);
 
     prevError = error;
-    
     pros::delay(10);
 
   }
-  
 }
+
 
 
 void set_flywheel_speed(int speed) {
@@ -114,6 +57,7 @@ void set_flywheel_speed(int speed) {
   if (pidTask != nullptr) { pidTask->remove(); }
   pidTask = (speed == -1) ? nullptr : std::make_unique<pros::Task>([=]{ flywheelPID(speed); });
 }
+
 
 void spinIntake() {
   intake.moveVelocity(600);
@@ -131,14 +75,14 @@ void stopIntake() {
   intake.moveVelocity(0);
 }
 
-void tripleShot() {
-  indexer.set_value(0);
-  pros::delay(150);
-  indexer.set_value(1);
-  pros::delay(2000);
-  indexer.set_value(0);
-  pros::delay(150);
-  indexer.set_value(1);
+void shoot() {
+  spinIntake();
+  indexer.set_value(true);
+}
+
+void stopShoot() {
+  stopIntake();
+  indexer.set_value(false);
 }
 
 void wait(int sec) {
@@ -146,21 +90,168 @@ void wait(int sec) {
 }
 
 void endgame() {
-  piston1.set_value(false);
-  piston2.set_value(false);
+  endgame1.set_value(true);
+  endgame2.set_value(true);
 }
 
-void shoot(int target, int shots){
-    int counter = 0;
-    while(counter < shots){
-  
-        if(flywheel.getActualVelocity()*6 > (target - 30)){
-            printf("flywheel: %f", flywheel.getActualVelocity()*6);
-            indexer.set_value(0);
-            pros::delay(200);
-            indexer.set_value(1);
-            counter++;
+
+void setChassisBreakMode(const pros::motor_brake_mode_e_t mode) {
+    ldf.set_brake_mode(mode);
+    ldm.set_brake_mode(mode);
+    ldb.set_brake_mode(mode);
+    rdf.set_brake_mode(mode);
+    rdm.set_brake_mode(mode);
+    rdb.set_brake_mode(mode);
+}
+
+
+void driveP(int targetLeft, int targetRight, int voltageMax=115) {
+  ldb.tare_position(); // reset base encoders
+  rdb.tare_position();
+
+  bool debugLog = false; //debuging
+
+	float kp = 0.15;
+	float acc = 5;
+	float kpTurn = 0.7;
+	float accTurn = 4;
+
+	// the untouchables
+	float voltageLeft = 0;
+	float voltageRight = 0;
+	int errorLeft;
+	int errorRight;
+	int voltageCap = 0;
+	int signLeft;
+	int signRight;
+	int errorCurrent = 0;
+	int errorLast = 0;
+	int sameErrCycles = 0;
+	int same0ErrCycles = 0;
+	int startTime = pros::millis();
+	targetLeft = targetLeft + ldb.get_position();
+	targetRight = targetRight + rdb.get_position();
+
+	while(autonomous){
+    std::cout << pros::millis() << (ldb.get_position() + rdb.get_position())/2 << std::endl;
+		errorLeft = targetLeft - ldb.get_position(); // error is target minus actual value
+    errorRight = targetRight - rdb.get_position();
+		errorCurrent = (abs(errorRight) + abs(errorLeft)) / 2;
+
+		signLeft = errorLeft / abs(errorLeft); // + or - 1
+		signRight = errorRight / abs(errorRight);
+
+		if(signLeft == signRight){
+			voltageLeft = errorLeft * kp; // intended voltage is error times constant
+			voltageRight = errorRight * kp;
+			voltageCap = voltageCap + acc;  // slew rate
+		}
+		else{
+			voltageLeft = errorLeft * kpTurn; // same logic with different turn value
+			voltageRight = errorRight * kpTurn;
+			voltageCap = voltageCap + accTurn;  // turn slew rate
+		}
+		
+		if(voltageCap > voltageMax) voltageCap = voltageMax; // voltageCap cannot exceed 115
+
+		if(abs(voltageLeft) > voltageCap) voltageLeft = voltageCap * signLeft; // limit the voltage
+		if(abs(voltageRight) > voltageCap) voltageRight = voltageCap * signRight;// ditto
+
+		// set the motors to the intended speed
+		//chassis->getModel()->tank(voltageLeft/127, voltageRight/127);
+        ldf.move(voltageLeft); 
+        ldm.move(voltageLeft);
+        ldb.move(voltageLeft);
+        rdf.move(voltageRight);
+        rdm.move(voltageRight);
+        rdb.move(voltageRight);
+
+		// timeout utility
+		if (errorLast == errorCurrent) {
+			if (errorCurrent <= 2) same0ErrCycles +=1; // less than 2 ticks is "0" error
+			sameErrCycles += 1;
+		}
+		else {
+			sameErrCycles = 0;
+			same0ErrCycles = 0;
+		}
+
+		// exit paramaters
+		if ((errorLast < 5 and errorCurrent < 5) or sameErrCycles >= 20) { // allowing for smol error or exit if we stay the same err for .4 second
+			ldf.move_velocity(0); 
+      ldm.move_velocity(0);
+		  ldb.move_velocity(0);
+		  rdf.move_velocity(0);
+      rdm.move_velocity(0);
+		  rdb.move_velocity(0);
+			std::cout << pros::millis() << "task complete with error " << errorCurrent << " in " << (pros::millis() - startTime) << "ms" << std::endl;
+			return;
+		}
+		
+		// debug
+		if (debugLog) {
+			std::cout << pros::millis() << "error  " << errorCurrent << std::endl;
+			std::cout << pros::millis() << "errorLeft  " << errorLeft << std::endl;
+			std::cout << pros::millis() << "errorRight  " << errorRight << std::endl;
+			std::cout << pros::millis() << "voltageLeft  " << voltageLeft << std::endl;
+			std::cout << pros::millis() << "voltageRight  " << voltageRight << std::endl;
+		}
+
+		// nothing goes after this
+		errorLast = errorCurrent;
+		pros::delay(20);
+	}
+}
+
+void chassisDriveDistance(int unit, int speed) {
+    int direction = (speed/-speed)*-1;
+    ldf.tare_position();
+    ldf.tare_position();
+    chassisDrive(speed * direction, speed * direction);
+    pros::delay(200);
+    while (true) {
+        chassisDrive(speed * direction, speed * direction);
+        pros::delay(20);
+        auto pos = averageChassisMotorPosition();
+        if ((abs(pos) - unit) >= 400) {
+            break;
         }
-        pros::delay(10);
     }
+    while (true) {
+        chassisDrive(30 * direction, 30 * direction);
+        pros::delay(20);
+        auto pos = averageChassisMotorPosition();
+        if (abs(pos) >= unit) {
+            break;
+        }
+    }
+    chassisDrive(0, 0);
+}
+
+
+void chassisDrive(int left_power, int right_power) {
+    if (abs(left_power) < chass_power_threshold) {
+        left_power = 0;
+    }
+    if (abs(right_power) < chass_power_threshold) {
+        right_power = 0;
+    }
+
+    ldf.move(left_power);
+    ldm.move(left_power);
+    ldb.move(left_power);
+    rdf.move(right_power);
+    rdm.move(right_power);
+    rdb.move(right_power);
+}
+
+double averageChassisMotorPosition() {
+    auto l_pos = ldf.get_position();
+    auto r_pos = ldf.get_position(); 
+
+        // cout << "left position: " << l_pos
+        //     << ", right position: " << r_pos
+        //     << endl;
+
+    return (l_pos + r_pos) / 2;
 }
