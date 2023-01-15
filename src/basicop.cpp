@@ -76,9 +76,52 @@ void stopIntake() {
 }
 
 void shoot() {
-  spinIntake();
   indexer.set_value(true);
+  intake.moveRelative(1050,450);
+  wait(1500);
+  intake.moveRelative(825,450);
+  wait(1500);
+  intake.moveRelative(1000,450);
+  wait(400);
+
+  // intake.moveVelocity(250);
+  // indexer.set_value(true);
+  // wait(3000);
+
+  // bool change = false;
+  // int count = 0;
+  // while(count <= 6) { 
+  //   int error = abs(flywheel.get_actual_velocity() - 600);
+  //   bool intakeRun = error < 5;
+
+  //   if(change != intakeRun) {
+  //     count += 1;
+  //     change = !change;
+  //   }
+
+
+} 
+
+
+void shoott(int target, int shots){
+    int counter = 0;
+    indexer.set_value(true);
+    while(counter < shots){
+  
+        if(flywheel.get_actual_velocity()*6 > (target - 30)){
+            printf("flywheel: %f", flywheel.get_actual_velocity()*6); 
+            printf("\n");
+            pros::delay(600);
+            flywheel.move_velocity(600);
+            pros::delay(300);
+            flywheel.move_velocity(0);     
+            counter++;
+        }
+        pros::delay(10);
+    }
+    indexer.set_value(false);
 }
+
 
 void stopShoot() {
   stopIntake();

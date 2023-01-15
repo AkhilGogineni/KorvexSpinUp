@@ -105,7 +105,7 @@ void flywheelP(void *p) {
         } else if(master.get_digital_new_press(DIGITAL_B)) {
             set_flywheel_speed(0);
         } else if(master.get_digital_new_press(DIGITAL_DOWN)) {
-            set_flywheel_speed(3300);
+            set_flywheel_speed(3600);
         }
         pros::delay(10);
 

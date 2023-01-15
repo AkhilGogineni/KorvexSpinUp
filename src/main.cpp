@@ -201,7 +201,7 @@ void initialize() {
 	lv_obj_set_pos(BlueLeftBtn, 0, 0);
 	lv_obj_align(BlueLeftBtn, NULL, LV_ALIGN_CENTER, -150, -5);
 
-	lv_label_set_text(labelBlueRight, "BlueLeft");
+	lv_label_set_text(labelBlueRight, "BlueRight");
 	lv_btn_set_action(BlueRightBtn, LV_BTN_ACTION_CLICK, BlueRightBtnAction);
 	lv_obj_set_size(BlueRightBtn, 150, 50);
 	lv_btnm_set_toggle(BlueRightBtn, true, 1);
@@ -327,7 +327,7 @@ void autonomous() {
 
 	
 	if(autonSelection == autonStates::off) {
-			autonSelection = autonStates::test;
+			autonSelection = autonStates::BlueSoloWP;
 	}		
 	switch(autonSelection) {
 		case autonStates::RedLeft:

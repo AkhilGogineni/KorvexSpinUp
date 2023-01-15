@@ -20,3 +20,4 @@ extern void driveP(int targetLeft, int targetRight, int voltageMax);
 extern void chassisDrive(int left_power, int right_power);
 extern void chassisDriveDistance(int unit, int speed);
 extern double averageChassisMotorPosition();
+extern void shoott(int target, int shots);
