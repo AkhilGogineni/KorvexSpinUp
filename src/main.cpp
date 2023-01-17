@@ -327,7 +327,7 @@ void autonomous() {
 
 	
 	if(autonSelection == autonStates::off) {
-			autonSelection = autonStates::BlueSoloWP;
+			autonSelection = autonStates::BlueRight;
 	}		
 	switch(autonSelection) {
 		case autonStates::RedLeft:

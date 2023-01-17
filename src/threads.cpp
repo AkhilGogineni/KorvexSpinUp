@@ -90,7 +90,7 @@ void threadingIndexing(void *p) {
     while(true) {       
         if(master.get_digital_new_press(DIGITAL_Y)) {
             angler.set_value(true);
-            wait(20);
+            wait(200);
             angler.set_value(false);
         }
         pros::delay(10);
@@ -105,7 +105,7 @@ void flywheelP(void *p) {
         } else if(master.get_digital_new_press(DIGITAL_B)) {
             set_flywheel_speed(0);
         } else if(master.get_digital_new_press(DIGITAL_DOWN)) {
-            set_flywheel_speed(3600);
+            set_flywheel_speed(3300);
         }
         pros::delay(10);
 
