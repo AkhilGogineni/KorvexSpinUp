@@ -27,8 +27,8 @@ void default_constants() {
   chassis.set_slew_min_power(60, 60);
   chassis.set_slew_distance(9, 9);
   chassis.set_pid_constants(&chassis.headingPID, 11, 0, 20, 0);
-  chassis.set_pid_constants(&chassis.forward_drivePID, 0.8, 0.3, 5, 0);
-  chassis.set_pid_constants(&chassis.backward_drivePID, 0.8, 0.3, 5, 0);
+  chassis.set_pid_constants(&chassis.forward_drivePID, 0.8, 0.7, 5, 0);
+  chassis.set_pid_constants(&chassis.backward_drivePID, 0.8, 0.7, 5, 0);
   chassis.set_pid_constants(&chassis.turnPID, 5, 0.003, 35, 15);
   chassis.set_pid_constants(&chassis.swingPID, 7, 0, 45, 0);
 }
@@ -222,20 +222,20 @@ void RedLeft() {
   chassis.wait_drive();
   chassis.set_drive_pid(6, DRIVE_SPEED, true);
   chassis.wait_drive();
-  wait(1200);
-  chassis.set_turn_pid(-6, TURN_SPEED); //turn to high goal
+  wait(300);
+  chassis.set_turn_pid(-8, TURN_SPEED); //turn to high goal
   chassis.wait_drive();
   wait(600);
   indexer.set_value(true);
-  intake.moveRelative(925,600);
-  wait(2000);
-  intake.moveRelative(800,600);
-  wait(2000);
-  intake.moveRelative(1000,600);
+  intake.moveRelative(925,450);
+  wait(1200);
+  intake.moveRelative(825,450);
+  wait(1300);
+  intake.moveRelative(1000,450);
   wait(400);
   wait(500);
   stopShoot();
-  set_flywheel_speed(3550);
+  set_flywheel_speed(3450);
   chassis.set_drive_pid(-5, DRIVE_SPEED, true);
   chassis.wait_drive();
   spinIntake();
@@ -253,13 +253,13 @@ void RedLeft() {
   wait(500);
   chassis.set_drive_pid(4, DRIVE_SPEED, true);
   chassis.wait_drive();
-  wait(500);
+  wait(200);
   indexer.set_value(true);
   wait(200);
   intake.moveRelative(875,450);
-  wait(1500);
+  wait(700);
   intake.moveRelative(800,450);
-  wait(1500);
+  wait(700);
   intake.moveRelative(1000,450);
   wait(400);
   wait(300);
@@ -267,32 +267,57 @@ void RedLeft() {
 }
 
 void RedRight() {
-  set_flywheel_speed(3550);
+  set_flywheel_speed(3530);
   spinIntake();
   chassis.set_drive_pid(15, 60, false);
   chassis.wait_drive();
   chassis.set_turn_pid(20, TURN_SPEED);
   chassis.wait_drive();
-  wait(1200);
-  indexer.set_value(true);
-  intake.moveRelative(875,450);
-  wait(2400);
-  intake.moveRelative(825,600);
-  wait(2400);
-  intake.moveRelative(1000,600);
   wait(400);
-  wait(300);
-  stopShoot();
+  indexer.set_value(true);
   wait(200);
+  intake.moveRelative(750,450);
+  wait(800);
+  intake.moveRelative(750,450);
+  wait(800);
+  intake.moveRelative(1000,450);
+  wait(500);
+  stopShoot();
   spinIntake();
+  wait(200);
+  set_flywheel_speed(3470);
+  chassis.set_drive_pid(11, 80);
+  chassis.wait_drive();
+  wait(200);
+  chassis.set_drive_pid(-11, DRIVE_SPEED);
+  chassis.wait_drive();
   chassis.set_turn_pid(-45, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-20, DRIVE_SPEED);
+  spinIntake();
+  chassis.set_drive_pid(40, 80);
+  chassis.wait_drive();
+  
+  chassis.set_turn_pid(43, TURN_SPEED);
+  chassis.wait_drive();
+  wait(50);
+  indexer.set_value(true);
+  wait(200);
+  intake.moveRelative(750,450);
+  wait(800);
+  intake.moveRelative(750,450);
+  wait(800);
+  intake.moveRelative(1000,450);
+  wait(500);
+  stopShoot();
+  chassis.set_turn_pid(-45, TURN_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(-62, DRIVE_SPEED);
   chassis.wait_drive();
   wait(200);
-  chassis.set_swing_pid(ez::RIGHT_SWING, -45, TURN_SPEED);
+  chassis.set_swing_pid(ez::RIGHT_SWING, -45, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-2, 60, false);
+  chassis.set_drive_pid(-4, 100, false);
   chassis.wait_drive();
   chassis.set_swing_pid(ez::RIGHT_SWING, 0, TURN_SPEED);
   chassis.wait_drive();
@@ -304,6 +329,29 @@ void RedRight() {
   chassis.set_drive_pid(4, DRIVE_SPEED, true);
   chassis.wait_drive(); //rollers end
 
+
+  // set_flywheel_speed(3400);
+  // spinIntake();
+  // chassis.set_drive_pid(44, DRIVE_SPEED, false);
+  // chassis.wait_drive();
+  // chassis.set_turn_pid(38, TURN_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_drive_pid(9, 60, false);
+  // chassis.wait_drive();
+  // wait(200);
+  // indexer.set_value(true);
+  // wait(200);
+  // intake.moveRelative(875,450);
+  // wait(500);
+  // intake.moveRelative(800,450);
+  // wait(500);
+  // intake.moveRelative(1000,450);
+  // wait(400);
+  // wait(300);
+  // stopShoot();
+  // chassis.set_swing_pid(ez::RIGHT_SWING, 135, TURN_SPEED);
+  // // chassis.wait_drive();
+  
 }
 void BlueLeft() {  
   set_flywheel_speed(3600); //start flywheel
@@ -324,14 +372,14 @@ void BlueLeft() {
   wait(600);
   indexer.set_value(true);
   intake.moveRelative(925,450);
-  wait(1300);
+  wait(1200);
   intake.moveRelative(825,450);
   wait(1300);
   intake.moveRelative(1000,450);
   wait(400);
   wait(500);
   stopShoot();
-  set_flywheel_speed(3550);
+  set_flywheel_speed(3450);
   chassis.set_drive_pid(-5, DRIVE_SPEED, true);
   chassis.wait_drive();
   spinIntake();
@@ -349,13 +397,13 @@ void BlueLeft() {
   wait(500);
   chassis.set_drive_pid(4, DRIVE_SPEED, true);
   chassis.wait_drive();
-  wait(500);
+  wait(200);
   indexer.set_value(true);
   wait(200);
   intake.moveRelative(875,450);
-  wait(1500);
+  wait(700);
   intake.moveRelative(800,450);
-  wait(1500);
+  wait(700);
   intake.moveRelative(1000,450);
   wait(400);
   wait(300);
@@ -363,32 +411,57 @@ void BlueLeft() {
 }
 
 void BlueRight() {
-   set_flywheel_speed(3570);
+  set_flywheel_speed(3530);
   spinIntake();
   chassis.set_drive_pid(15, 60, false);
   chassis.wait_drive();
   chassis.set_turn_pid(20, TURN_SPEED);
   chassis.wait_drive();
-  wait(1200);
-  indexer.set_value(true);
-  intake.moveRelative(900,450);
-  wait(1800);
-  intake.moveRelative(875,450);
-  wait(1800);
-  intake.moveRelative(1000,600);
   wait(400);
-  wait(300);
-  stopShoot();
+  indexer.set_value(true);
   wait(200);
+  intake.moveRelative(750,450);
+  wait(800);
+  intake.moveRelative(750,450);
+  wait(800);
+  intake.moveRelative(1000,450);
+  wait(500);
+  stopShoot();
   spinIntake();
+  wait(200);
+  set_flywheel_speed(3470);
+  chassis.set_drive_pid(11, 80);
+  chassis.wait_drive();
+  wait(200);
+  chassis.set_drive_pid(-11, DRIVE_SPEED);
+  chassis.wait_drive();
   chassis.set_turn_pid(-45, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-20, DRIVE_SPEED);
+  spinIntake();
+  chassis.set_drive_pid(40, 80);
+  chassis.wait_drive();
+  
+  chassis.set_turn_pid(43, TURN_SPEED);
+  chassis.wait_drive();
+  wait(50);
+  indexer.set_value(true);
+  wait(200);
+  intake.moveRelative(750,450);
+  wait(800);
+  intake.moveRelative(750,450);
+  wait(800);
+  intake.moveRelative(1000,450);
+  wait(500);
+  stopShoot();
+  chassis.set_turn_pid(-45, TURN_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(-62, DRIVE_SPEED);
   chassis.wait_drive();
   wait(200);
-  chassis.set_swing_pid(ez::RIGHT_SWING, -45, TURN_SPEED);
+  chassis.set_swing_pid(ez::RIGHT_SWING, -45, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-2, 60, false);
+  chassis.set_drive_pid(-4, 100, false);
   chassis.wait_drive();
   chassis.set_swing_pid(ez::RIGHT_SWING, 0, TURN_SPEED);
   chassis.wait_drive();
