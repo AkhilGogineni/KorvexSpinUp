@@ -318,16 +318,16 @@ void BlueLeft() {
   chassis.wait_drive();
   chassis.set_drive_pid(6, DRIVE_SPEED, true);
   chassis.wait_drive();
-  wait(1200);
-  chassis.set_turn_pid(-6, TURN_SPEED); //turn to high goal
+  wait(300);
+  chassis.set_turn_pid(-8, TURN_SPEED); //turn to high goal
   chassis.wait_drive();
   wait(600);
   indexer.set_value(true);
-  intake.moveRelative(925,600);
-  wait(1600);
-  intake.moveRelative(800,600);
-  wait(1600);
-  intake.moveRelative(1000,600);
+  intake.moveRelative(925,450);
+  wait(1300);
+  intake.moveRelative(825,450);
+  wait(1300);
+  intake.moveRelative(1000,450);
   wait(400);
   wait(500);
   stopShoot();
