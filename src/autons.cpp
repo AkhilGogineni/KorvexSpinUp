@@ -33,6 +33,16 @@ void default_constants() {
   chassis.set_pid_constants(&chassis.swingPID, 7, 0, 45, 0);
 }
 
+void skills_constants() {
+  chassis.set_slew_min_power(100, 100);
+  chassis.set_slew_distance(5, 5);
+  chassis.set_pid_constants(&chassis.headingPID, 11, 0, 20, 0);
+  chassis.set_pid_constants(&chassis.forward_drivePID, 0.17, 0, 1, 0.3);
+  chassis.set_pid_constants(&chassis.backward_drivePID, 0.17, 0, 1, 0.3);
+  chassis.set_pid_constants(&chassis.turnPID, 5, 0.003, 35, 15);
+  chassis.set_pid_constants(&chassis.swingPID, 7, 0, 45, 0);
+}
+
 void exit_condition_defaults() {
   chassis.set_exit_condition(chassis.turn_exit, 100, 3, 500, 7, 500, 500);
   chassis.set_exit_condition(chassis.swing_exit, 100, 3, 500, 7, 500, 500);
@@ -49,7 +59,11 @@ void modified_exit_condition() {
 // Drive Example
 ///
 void drive_example() {
-   chassis.set_swing_pid(ez::LEFT_SWING, 55, TURN_SPEED);
+   chassis.set_drive_pid(24, DRIVE_SPEED);
+   chassis.wait_drive();
+   wait(300);
+   chassis.set_drive_pid(-24, DRIVE_SPEED);
+   chassis.wait_drive();
 }
 
 
@@ -212,7 +226,7 @@ void interfered_example() {
 void RedLeft() {
   set_flywheel_speed(3600); //start flywheel
   spinRollers(); //rollers
-  chassis.set_drive_pid(-1.5, DRIVE_SPEED, false);
+  chassis.set_drive_pid(-2.5, DRIVE_SPEED, false);
   chassis.wait_drive();
   stopIntake();
   chassis.set_drive_pid(4, DRIVE_SPEED, true);
@@ -223,46 +237,46 @@ void RedLeft() {
   chassis.set_drive_pid(6, DRIVE_SPEED, true);
   chassis.wait_drive();
   wait(300);
-  chassis.set_turn_pid(-8, TURN_SPEED); //turn to high goal
+  chassis.set_turn_pid(-7.25, TURN_SPEED); //turn to high goal
   chassis.wait_drive();
-  wait(600);
+  wait(400);
   indexer.set_value(true);
   intake.moveRelative(925,450);
-  wait(1200);
-  intake.moveRelative(825,450);
+  wait(1300);
+  intake.moveRelative(875,450);
   wait(1300);
   intake.moveRelative(1000,450);
   wait(400);
-  wait(500);
+  wait(300);
   stopShoot();
-  set_flywheel_speed(3450);
+  set_flywheel_speed(3420);
   chassis.set_drive_pid(-5, DRIVE_SPEED, true);
   chassis.wait_drive();
   spinIntake();
   chassis.set_turn_pid(50, TURN_SPEED); //turn to stack of disks
   chassis.wait_drive();
-  chassis.set_drive_pid(58, 80, true);
+  chassis.set_drive_pid(60, 80, true);
   chassis.wait_until(30);
-  wait(400);
+  wait(250);
   chassis.set_max_speed(30);
   chassis.wait_drive();
-  chassis.set_drive_pid(-6, DRIVE_SPEED);
+  chassis.set_drive_pid(-8, 127);
   chassis.wait_drive();
   chassis.set_turn_pid(-36.5, TURN_SPEED); //turn to goal + shoot
   chassis.wait_drive();
-  wait(500);
+  wait(100);
   chassis.set_drive_pid(4, DRIVE_SPEED, true);
   chassis.wait_drive();
-  wait(200);
+  wait(50);
   indexer.set_value(true);
   wait(200);
-  intake.moveRelative(875,450);
-  wait(700);
+  intake.moveRelative(850,450);
+  wait(600);
   intake.moveRelative(800,450);
-  wait(700);
+  wait(900);
   intake.moveRelative(1000,450);
   wait(400);
-  wait(300);
+  wait(100);
   stopShoot();
 }
 
@@ -356,7 +370,7 @@ void RedRight() {
 void BlueLeft() {  
   set_flywheel_speed(3600); //start flywheel
   spinRollers(); //rollers
-  chassis.set_drive_pid(-1.5, DRIVE_SPEED, false);
+  chassis.set_drive_pid(-2.5, DRIVE_SPEED, false);
   chassis.wait_drive();
   stopIntake();
   chassis.set_drive_pid(4, DRIVE_SPEED, true);
@@ -367,46 +381,46 @@ void BlueLeft() {
   chassis.set_drive_pid(6, DRIVE_SPEED, true);
   chassis.wait_drive();
   wait(300);
-  chassis.set_turn_pid(-8, TURN_SPEED); //turn to high goal
+  chassis.set_turn_pid(-7.25, TURN_SPEED); //turn to high goal
   chassis.wait_drive();
-  wait(600);
+  wait(400);
   indexer.set_value(true);
   intake.moveRelative(925,450);
-  wait(1200);
-  intake.moveRelative(825,450);
+  wait(1300);
+  intake.moveRelative(875,450);
   wait(1300);
   intake.moveRelative(1000,450);
   wait(400);
-  wait(500);
+  wait(300);
   stopShoot();
-  set_flywheel_speed(3450);
+  set_flywheel_speed(3420);
   chassis.set_drive_pid(-5, DRIVE_SPEED, true);
   chassis.wait_drive();
   spinIntake();
   chassis.set_turn_pid(50, TURN_SPEED); //turn to stack of disks
   chassis.wait_drive();
-  chassis.set_drive_pid(58, 80, true);
+  chassis.set_drive_pid(60, 80, true);
   chassis.wait_until(30);
-  wait(400);
+  wait(250);
   chassis.set_max_speed(30);
   chassis.wait_drive();
-  chassis.set_drive_pid(-6, DRIVE_SPEED);
+  chassis.set_drive_pid(-8, 127);
   chassis.wait_drive();
   chassis.set_turn_pid(-36.5, TURN_SPEED); //turn to goal + shoot
   chassis.wait_drive();
-  wait(500);
+  wait(100);
   chassis.set_drive_pid(4, DRIVE_SPEED, true);
   chassis.wait_drive();
-  wait(200);
+  wait(50);
   indexer.set_value(true);
   wait(200);
-  intake.moveRelative(875,450);
-  wait(700);
+  intake.moveRelative(850,450);
+  wait(600);
   intake.moveRelative(800,450);
-  wait(700);
+  wait(900);
   intake.moveRelative(1000,450);
   wait(400);
-  wait(300);
+  wait(100);
   stopShoot();
 }
 

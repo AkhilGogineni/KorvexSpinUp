@@ -274,6 +274,7 @@ void initialize() {
 	// Initialize chassis and auton selector
 	default_constants();
 	modified_exit_condition();
+	skills_constants();
 
 	pros::ADIDigitalOut indexer('A', false);
 	pros::ADIDigitalOut endgame1('B', false);
@@ -327,7 +328,7 @@ void autonomous() {
 
 	
 	if(autonSelection == autonStates::off) {
-			autonSelection = autonStates::BlueRight;
+			autonSelection = autonStates::test;
 	}		
 	switch(autonSelection) {
 		case autonStates::RedLeft:
