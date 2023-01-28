@@ -49,7 +49,7 @@ void threadingIntake(void* p) {
             outtake();
         }
         if(master.get_digital(DIGITAL_R2)) {
-            intake.moveVelocity(425);
+            intake.moveVelocity(600);
         }
 
         pros::delay(10);
@@ -107,7 +107,7 @@ void flywheelP(void *p) {
         } else if(master.get_digital_new_press(DIGITAL_DOWN)) {
             set_flywheel_speed(3200);
         } else if(master.get_digital_new_press(DIGITAL_B)) {
-            set_flywheel_speed(3100);
+            set_flywheel_speed(3600);
         }
         pros::delay(10);
 

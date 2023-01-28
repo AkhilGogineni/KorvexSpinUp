@@ -265,11 +265,11 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
-            "bin/threads.cpp.o",
-            "src/threads.cpp"
+            "bin/main.cpp.o",
+            "src/main.cpp"
         ],
         "directory": "/Users/akhilgogineni/Documents/KorvexSpinUp",
-        "file": "src/threads.cpp"
+        "file": "src/main.cpp"
     },
     {
         "arguments": [
@@ -299,11 +299,11 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
-            "bin/main.cpp.o",
-            "src/main.cpp"
+            "bin/threads.cpp.o",
+            "src/threads.cpp"
         ],
         "directory": "/Users/akhilgogineni/Documents/KorvexSpinUp",
-        "file": "src/main.cpp"
+        "file": "src/threads.cpp"
     },
     {
         "arguments": [
