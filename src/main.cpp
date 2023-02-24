@@ -1,4 +1,5 @@
 #include "main.h"
+//#include "lemlib/api.hpp"
 #include <fstream>
 
 using namespace std;
@@ -89,16 +90,16 @@ static lv_res_t noAutonBtnAction(lv_obj_t *btn) {
 Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  {-17, 8, -9}
+  {-19, -13, 16}
 
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  ,{12, -5, 4}
+  ,{13, -17, 14}
 
   // IMU Port
 
-  ,10
+  ,20
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
