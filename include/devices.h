@@ -7,8 +7,10 @@ extern pros::Motor rdf;
 extern pros::Motor rdm;
 extern pros::Motor rdb;
 
-extern okapi::MotorGroup leftDrive;
-extern okapi::MotorGroup rightDrive;
+extern pros::Motor temp;
+
+// extern pros::MotorGroup leftMotors;
+// extern pros::MotorGroup rightMotors;
 
 
 extern okapi::Motor intake;

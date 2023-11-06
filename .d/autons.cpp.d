@@ -1,16 +1,17 @@
 bin/autons.cpp.o: src/autons.cpp include/main.h include/api.h \
  include/pros/adi.h include/pros/colors.h include/pros/distance.h \
- include/pros/ext_adi.h include/pros/adi.h include/pros/adi.h \
- include/pros/gps.h include/pros/imu.h include/pros/llemu.h \
- include/display/lvgl.h include/display/lv_version.h \
- include/display/lv_misc/lv_log.h include/display/lv_conf.h \
- include/display/lv_conf_checker.h include/display/lv_misc/lv_task.h \
- include/display/lv_misc/lv_mem.h include/display/lv_misc/lv_log.h \
- include/display/lv_misc/lv_ll.h include/display/lv_hal/lv_hal.h \
- include/display/lv_hal/lv_hal_disp.h include/display/lv_hal/lv_hal.h \
- include/display/lv_misc/lv_color.h include/display/lv_misc/lv_area.h \
- include/display/lv_hal/lv_hal_indev.h include/display/lv_core/lv_obj.h \
- include/display/lv_core/lv_style.h include/display/lv_misc/lv_font.h \
+ include/pros/error.h include/pros/ext_adi.h include/pros/adi.h \
+ include/pros/adi.h include/pros/gps.h include/pros/imu.h \
+ include/pros/link.h include/pros/llemu.h include/display/lvgl.h \
+ include/display/lv_version.h include/display/lv_misc/lv_log.h \
+ include/display/lv_conf.h include/display/lv_conf_checker.h \
+ include/display/lv_misc/lv_task.h include/display/lv_misc/lv_mem.h \
+ include/display/lv_misc/lv_log.h include/display/lv_misc/lv_ll.h \
+ include/display/lv_hal/lv_hal.h include/display/lv_hal/lv_hal_disp.h \
+ include/display/lv_hal/lv_hal.h include/display/lv_misc/lv_color.h \
+ include/display/lv_misc/lv_area.h include/display/lv_hal/lv_hal_indev.h \
+ include/display/lv_core/lv_obj.h include/display/lv_core/lv_style.h \
+ include/display/lv_misc/lv_font.h \
  include/display/lv_misc/lv_symbol_def.h \
  include/display/lv_fonts/lv_font_builtin.h \
  include/display/lv_misc/lv_anim.h include/display/lv_misc/lv_mem.h \
@@ -64,22 +65,24 @@ bin/autons.cpp.o: src/autons.cpp include/main.h include/api.h \
  include/display/lv_objx/lv_arc.h include/display/lv_objx/lv_calendar.h \
  include/display/lv_objx/lv_spinbox.h include/display/lv_objx/lv_ta.h \
  include/pros/misc.h include/pros/motors.h include/pros/optical.h \
- include/api.h include/pros/rtos.h include/pros/rotation.h \
+ include/pros/error.h include/pros/rtos.h include/pros/rotation.h \
  include/pros/screen.h include/pros/colors.h include/pros/vision.h \
  include/pros/adi.hpp include/pros/distance.hpp include/pros/distance.h \
  include/pros/gps.hpp include/pros/gps.h include/pros/imu.hpp \
  include/pros/imu.h include/pros/llemu.hpp include/pros/llemu.h \
  include/pros/misc.hpp include/pros/misc.h include/pros/motors.hpp \
- include/pros/motors.h include/pros/optical.hpp include/pros/optical.h \
+ include/pros/motors.h include/pros/rtos.hpp include/pros/rtos.h \
+ include/pros/optical.hpp include/pros/optical.h \
  include/pros/rotation.hpp include/pros/rotation.h include/pros/rtos.hpp \
- include/pros/rtos.h include/pros/screen.hpp include/pros/screen.h \
- include/pros/vision.hpp include/pros/vision.h include/okapi/api.hpp \
+ include/pros/screen.hpp include/pros/screen.h include/pros/vision.hpp \
+ include/pros/vision.h include/pros/link.hpp include/pros/link.h \
+ include/okapi/api.hpp \
  include/okapi/api/chassis/controller/chassisControllerIntegrated.hpp \
  include/okapi/api/chassis/controller/chassisController.hpp \
  include/okapi/api/chassis/controller/chassisScales.hpp \
  include/okapi/api/units/QAngle.hpp include/okapi/api/units/RQuantity.hpp \
  include/okapi/api/units/QLength.hpp include/okapi/api/util/logging.hpp \
- include/okapi/api/coreProsAPI.hpp include/pros/apix.h \
+ include/okapi/api/coreProsAPI.hpp include/api.h include/pros/apix.h \
  include/pros/serial.h include/pros/serial.hpp \
  include/okapi/api/util/abstractTimer.hpp \
  include/okapi/api/units/QFrequency.hpp include/okapi/api/units/QTime.hpp \
@@ -111,8 +114,10 @@ bin/autons.cpp.o: src/autons.cpp include/main.h include/api.h \
  include/okapi/api/chassis/model/skidSteerModel.hpp \
  include/okapi/api/odometry/odometry.hpp \
  include/okapi/api/odometry/odomState.hpp \
+ include/okapi/api/units/RQuantityName.hpp \
+ include/okapi/api/units/QSpeed.hpp \
  include/okapi/api/odometry/stateMode.hpp \
- include/okapi/api/odometry/point.hpp include/okapi/api/units/QSpeed.hpp \
+ include/okapi/api/odometry/point.hpp \
  include/okapi/api/chassis/model/hDriveModel.hpp \
  include/okapi/api/chassis/model/threeEncoderSkidSteerModel.hpp \
  include/okapi/api/chassis/model/threeEncoderXDriveModel.hpp \
@@ -127,18 +132,22 @@ bin/autons.cpp.o: src/autons.cpp include/main.h include/api.h \
  include/okapi/api/control/async/asyncLinearMotionProfileController.hpp \
  include/okapi/api/control/util/pathfinderUtil.hpp \
  include/okapi/api/units/QAngularSpeed.hpp \
- include/okapi/pathfinder/include/pathfinder.h \
- include/okapi/pathfinder/include/pathfinder/mathutil.h \
- include/okapi/pathfinder/include/pathfinder/lib.h \
- include/okapi/pathfinder/include/pathfinder/structs.h \
- include/okapi/pathfinder/include/pathfinder/fit.h \
- include/okapi/pathfinder/include/pathfinder/spline.h \
- include/okapi/pathfinder/include/pathfinder/trajectory.h \
- include/okapi/pathfinder/include/pathfinder/modifiers/tank.h \
- include/okapi/pathfinder/include/pathfinder/modifiers/swerve.h \
- include/okapi/pathfinder/include/pathfinder/followers/encoder.h \
- include/okapi/pathfinder/include/pathfinder/followers/distance.h \
- include/okapi/pathfinder/include/pathfinder/io.h \
+ include/okapi/squiggles/squiggles.hpp \
+ include/okapi/squiggles/geometry/controlvector.hpp \
+ include/okapi/squiggles/geometry/pose.hpp \
+ include/okapi/squiggles/math/utils.hpp \
+ include/okapi/squiggles/geometry/pose.hpp \
+ include/okapi/squiggles/geometry/profilepoint.hpp \
+ include/okapi/squiggles/geometry/controlvector.hpp \
+ include/okapi/squiggles/physicalmodel/passthroughmodel.hpp \
+ include/okapi/squiggles/physicalmodel/physicalmodel.hpp \
+ include/okapi/squiggles/constraints.hpp \
+ include/okapi/squiggles/geometry/pose.hpp \
+ include/okapi/squiggles/physicalmodel/physicalmodel.hpp \
+ include/okapi/squiggles/physicalmodel/tankmodel.hpp \
+ include/okapi/squiggles/constraints.hpp include/okapi/squiggles/io.hpp \
+ include/okapi/squiggles/spline.hpp \
+ include/okapi/squiggles/math/quinticpolynomial.hpp \
  include/okapi/api/control/async/asyncMotionProfileController.hpp \
  include/okapi/api/control/async/asyncPosPidController.hpp \
  include/okapi/api/control/async/asyncWrapper.hpp \
@@ -190,23 +199,30 @@ bin/autons.cpp.o: src/autons.cpp include/main.h include/api.h \
  include/okapi/api/units/QMass.hpp include/okapi/api/units/QJerk.hpp \
  include/okapi/api/units/QPressure.hpp \
  include/okapi/api/units/QTorque.hpp include/okapi/api/units/QVolume.hpp \
+ include/okapi/impl/util/configurableTimeUtilFactory.hpp \
  include/okapi/impl/util/rate.hpp include/EZ-Template/api.hpp \
  include/EZ-Template/PID.hpp include/EZ-Template/util.hpp \
  include/EZ-Template/auton.hpp include/EZ-Template/auton_selector.hpp \
  include/EZ-Template/drive/drive.hpp include/EZ-Template/sdcard.hpp \
  include/autons.hpp include/devices.h include/main.h include/threads.h \
  include/odometry.h include/splines.h include/gui.h include/PurePursuit.h \
- include/basicop.h
+ include/basicop.h include/lemlib/api.hpp include/lemlib/util.hpp \
+ include/lemlib/pid.hpp include/lemlib/pose.hpp \
+ include/lemlib/chassis/trackingWheel.hpp include/pros/motors.hpp \
+ include/pros/adi.hpp include/pros/rotation.hpp \
+ include/lemlib/chassis/chassis.hpp include/pros/imu.hpp
 include/main.h:
 include/api.h:
 include/pros/adi.h:
 include/pros/colors.h:
 include/pros/distance.h:
+include/pros/error.h:
 include/pros/ext_adi.h:
 include/pros/adi.h:
 include/pros/adi.h:
 include/pros/gps.h:
 include/pros/imu.h:
+include/pros/link.h:
 include/pros/llemu.h:
 include/display/lvgl.h:
 include/display/lv_version.h:
@@ -316,7 +332,7 @@ include/display/lv_objx/lv_ta.h:
 include/pros/misc.h:
 include/pros/motors.h:
 include/pros/optical.h:
-include/api.h:
+include/pros/error.h:
 include/pros/rtos.h:
 include/pros/rotation.h:
 include/pros/screen.h:
@@ -335,16 +351,19 @@ include/pros/misc.hpp:
 include/pros/misc.h:
 include/pros/motors.hpp:
 include/pros/motors.h:
+include/pros/rtos.hpp:
+include/pros/rtos.h:
 include/pros/optical.hpp:
 include/pros/optical.h:
 include/pros/rotation.hpp:
 include/pros/rotation.h:
 include/pros/rtos.hpp:
-include/pros/rtos.h:
 include/pros/screen.hpp:
 include/pros/screen.h:
 include/pros/vision.hpp:
 include/pros/vision.h:
+include/pros/link.hpp:
+include/pros/link.h:
 include/okapi/api.hpp:
 include/okapi/api/chassis/controller/chassisControllerIntegrated.hpp:
 include/okapi/api/chassis/controller/chassisController.hpp:
@@ -354,6 +373,7 @@ include/okapi/api/units/RQuantity.hpp:
 include/okapi/api/units/QLength.hpp:
 include/okapi/api/util/logging.hpp:
 include/okapi/api/coreProsAPI.hpp:
+include/api.h:
 include/pros/apix.h:
 include/pros/serial.h:
 include/pros/serial.hpp:
@@ -388,9 +408,10 @@ include/okapi/api/chassis/controller/odomChassisController.hpp:
 include/okapi/api/chassis/model/skidSteerModel.hpp:
 include/okapi/api/odometry/odometry.hpp:
 include/okapi/api/odometry/odomState.hpp:
+include/okapi/api/units/RQuantityName.hpp:
+include/okapi/api/units/QSpeed.hpp:
 include/okapi/api/odometry/stateMode.hpp:
 include/okapi/api/odometry/point.hpp:
-include/okapi/api/units/QSpeed.hpp:
 include/okapi/api/chassis/model/hDriveModel.hpp:
 include/okapi/api/chassis/model/threeEncoderSkidSteerModel.hpp:
 include/okapi/api/chassis/model/threeEncoderXDriveModel.hpp:
@@ -405,18 +426,23 @@ include/okapi/impl/util/timeUtilFactory.hpp:
 include/okapi/api/control/async/asyncLinearMotionProfileController.hpp:
 include/okapi/api/control/util/pathfinderUtil.hpp:
 include/okapi/api/units/QAngularSpeed.hpp:
-include/okapi/pathfinder/include/pathfinder.h:
-include/okapi/pathfinder/include/pathfinder/mathutil.h:
-include/okapi/pathfinder/include/pathfinder/lib.h:
-include/okapi/pathfinder/include/pathfinder/structs.h:
-include/okapi/pathfinder/include/pathfinder/fit.h:
-include/okapi/pathfinder/include/pathfinder/spline.h:
-include/okapi/pathfinder/include/pathfinder/trajectory.h:
-include/okapi/pathfinder/include/pathfinder/modifiers/tank.h:
-include/okapi/pathfinder/include/pathfinder/modifiers/swerve.h:
-include/okapi/pathfinder/include/pathfinder/followers/encoder.h:
-include/okapi/pathfinder/include/pathfinder/followers/distance.h:
-include/okapi/pathfinder/include/pathfinder/io.h:
+include/okapi/squiggles/squiggles.hpp:
+include/okapi/squiggles/geometry/controlvector.hpp:
+include/okapi/squiggles/geometry/pose.hpp:
+include/okapi/squiggles/math/utils.hpp:
+include/okapi/squiggles/geometry/pose.hpp:
+include/okapi/squiggles/geometry/profilepoint.hpp:
+include/okapi/squiggles/geometry/controlvector.hpp:
+include/okapi/squiggles/physicalmodel/passthroughmodel.hpp:
+include/okapi/squiggles/physicalmodel/physicalmodel.hpp:
+include/okapi/squiggles/constraints.hpp:
+include/okapi/squiggles/geometry/pose.hpp:
+include/okapi/squiggles/physicalmodel/physicalmodel.hpp:
+include/okapi/squiggles/physicalmodel/tankmodel.hpp:
+include/okapi/squiggles/constraints.hpp:
+include/okapi/squiggles/io.hpp:
+include/okapi/squiggles/spline.hpp:
+include/okapi/squiggles/math/quinticpolynomial.hpp:
 include/okapi/api/control/async/asyncMotionProfileController.hpp:
 include/okapi/api/control/async/asyncPosPidController.hpp:
 include/okapi/api/control/async/asyncWrapper.hpp:
@@ -471,6 +497,7 @@ include/okapi/api/units/QJerk.hpp:
 include/okapi/api/units/QPressure.hpp:
 include/okapi/api/units/QTorque.hpp:
 include/okapi/api/units/QVolume.hpp:
+include/okapi/impl/util/configurableTimeUtilFactory.hpp:
 include/okapi/impl/util/rate.hpp:
 include/EZ-Template/api.hpp:
 include/EZ-Template/PID.hpp:
@@ -488,3 +515,13 @@ include/splines.h:
 include/gui.h:
 include/PurePursuit.h:
 include/basicop.h:
+include/lemlib/api.hpp:
+include/lemlib/util.hpp:
+include/lemlib/pid.hpp:
+include/lemlib/pose.hpp:
+include/lemlib/chassis/trackingWheel.hpp:
+include/pros/motors.hpp:
+include/pros/adi.hpp:
+include/pros/rotation.hpp:
+include/lemlib/chassis/chassis.hpp:
+include/pros/imu.hpp:

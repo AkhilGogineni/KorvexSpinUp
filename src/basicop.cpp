@@ -60,15 +60,15 @@ void set_flywheel_speed(int speed) {
 
 
 void spinIntake() {
-  intake.moveVelocity(600);
+  intake.moveVoltage(12000);
 }
 
 void outtake() {
-  intake.moveVelocity(-600);
+  intake.moveVoltage(-12000);
 }
 
 void spinRollers() {
-  intake.moveVelocity(400);
+  intake.moveVoltage(8000);
 }
 
 void stopIntake() {
@@ -125,7 +125,6 @@ void shoott(int target, int shots){
 
 void stopShoot() {
   stopIntake();
-  indexer.set_value(false);
 }
 
 void wait(int sec) {

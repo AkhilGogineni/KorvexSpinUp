@@ -1,8 +1,53 @@
 #include "main.h"
-//#include "lemlib/api.hpp"
+#include "lemlib/api.hpp"
 #include <fstream>
 
 using namespace std;
+
+
+
+// // drivetrain
+// lemlib::Drivetrain_t drivetrain {
+// 	&leftMotors,
+// 	&rightMotors,
+// 	10,
+// 	3.25,
+// 	360,
+// };
+
+// // lateral motion controller
+// lemlib::ChassisController_t lateralController {
+// 	10,
+// 	30,
+// 	1,
+// 	100,
+// 	3,
+// 	500,
+// 	1
+// };
+
+// // angular motion controller
+// lemlib::ChassisController_t angularController {
+// 	2,
+// 	10,
+// 	1,
+// 	100,
+// 	3,
+// 	500,
+// 	1
+// };
+
+// // sensors for odometry
+// lemlib::OdomSensors_t sensors {
+// 	nullptr,
+// 	nullptr,
+// 	nullptr,
+// 	nullptr,
+// 	&imu
+// };
+
+
+// lemlib::Chassis lemChassis(drivetrain, lateralController, angularController, sensors);
 
 enum class autonStates { // the possible auton selections
 	off,
@@ -90,12 +135,12 @@ static lv_res_t noAutonBtnAction(lv_obj_t *btn) {
 Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  {-19, -13, 16}
+  {-19, 16, -18}
 
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  ,{13, -17, 14}
+  ,{12, -17, 14}
 
   // IMU Port
 
@@ -103,7 +148,7 @@ Drive chassis (
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
-  ,2.65
+  ,2.6
 
   // Cartridge RPM
   //   (or tick per rotation if using tracking wheels)
@@ -113,7 +158,7 @@ Drive chassis (
   //    (or gear ratio of tracking wheel)
   // eg. if your drive is 84:36 where the 36t is powered, your RATIO would be 2.333.
   // eg. if your drive is 36:60 where the 60t is powered, your RATIO would be 0.6.
-  ,60.0/36.0	
+  ,1.666
 
   // Uncomment if using tracking wheels
   /*
@@ -277,18 +322,17 @@ void initialize() {
 	modified_exit_condition();
 	skills_constants();
 
-	pros::ADIDigitalOut indexer('A', false);
-	pros::ADIDigitalOut endgame1('B', false);
-	pros::ADIDigitalOut endgame2('C', false);
-	pros::ADIDigitalOut angler('D', false);
+	pros::ADIDigitalOut indexer('A', true);
+	pros::ADIDigitalOut endgame1('C', false);
+	pros::ADIDigitalOut angler('B', false);
 	chassis.initialize();
+	//lemChassis.calibrate();
 }
 
 void disabled() {
-	pros::ADIDigitalOut indexer('A', false);
-	pros::ADIDigitalOut endgame1('B', false);
-	pros::ADIDigitalOut endgame2('C', false);
-	pros::ADIDigitalOut angler('D', false);
+	pros::ADIDigitalOut indexer('A', true);
+	pros::ADIDigitalOut endgame1('C', false);
+	pros::ADIDigitalOut angler('B', false);
 
 }
 
@@ -316,7 +360,7 @@ void autonomous() {
 		tindexing.suspend();
 	}
 
-
+	
 	chassis.reset_pid_targets(); // Resets PID targets to 0
 	chassis.reset_gyro(); // Reset gyro position to 0
 	chassis.reset_drive_sensor(); // Reset drive sensors to 0
@@ -329,7 +373,7 @@ void autonomous() {
 
 	
 	if(autonSelection == autonStates::off) {
-			autonSelection = autonStates::test;
+			autonSelection = autonStates::RedSoloWP;
 	}		
 	switch(autonSelection) {
 		case autonStates::RedLeft:
@@ -357,12 +401,9 @@ void autonomous() {
 			// swing_example();
 			break;
 		case autonStates::test:
-			//test();
-			//tuning
 			drive_example();
 			//turn_example();
 			//swing_example();
-			// flywheel.suspend();
 			break;
 		default:
 			break;
@@ -373,7 +414,6 @@ void autonomous() {
 
 void opcontrol() {
 
-	//chassis.set_drive_brake(MOTOR_BRAKE_COAST); // Set motors to hold.  This helps autonomous consistency.
 	
 	flywheel.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	intake.setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
@@ -386,6 +426,9 @@ void opcontrol() {
 		tendgame.resume();
 		tflywheelP.resume();
 		tindexing.resume();
-		//std::cout << pros::millis() << ": flywheelRPM: " << flywheel.getActualVelocity() << std::endl;
+
+
+		std::cout << pros::millis() << ": lf: " << ldf.get_position() << std::endl;
+		std::cout << pros::millis() << ": rf: " << rdf.get_position() << std::endl;
 	} 
 }
